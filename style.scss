@@ -1,0 +1,17 @@
+@mixin widthAfterGradientTitle($width) {
+    max-width: $width;
+    display: inline-block;
+}
+
+.title-gradient {
+    display: inline-block;
+    width: auto !important;
+    position: relative;
+    &:after {
+        bottom: 0;
+        height: 4px;
+        @extend .gradient-element-properties;
+        //dynamic sizing of border gradient
+        @include widthAfterGradientTitle(var(--width));
+    }
+}
