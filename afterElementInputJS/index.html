@@ -10,8 +10,13 @@
     <style>
         body {
             background: black;
+            color: white;
         }
-        
+
+        .wrapperInput {
+            position: relative;
+        }
+
         input {
             border: 1px solid #4facfe !important;
             border-radius: inherit !important;
@@ -22,71 +27,71 @@
             font-weight: bold;
             height: 55px;
             background-color: transparent;
+            width: 200px;
+            z-index: 10;
+            position: relative;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+
+        }
+
+        .afterInput {
+            border: 1px solid red !important;
+            color: #04306f;
+            padding: 26px 10px;
+            margin-top: 10px;
+            font-size: 20px;
+            font-weight: bold;
+            background-color: transparent;
+            width: 200px;
+            position: absolute;
+            left: 0;
+            top: 0;
+            z-index: 1;
+            font-family: sans-serif;
+        }
         }
     </style>
 </head>
 
 <body>
+    <div class="container">
 
-    <input placeholder="Année de naissance" name="annee_naissance" type="number" class="form-control" id="dSuggest">
 
-    <script type='text/javascript' src='http://www.simulation-retraite.localhost/wp-includes/js/jquery/jquery.js?ver=1.12.4-wp'></script>
+        <label for="">Veuillez entrer votre âge</label>
+        <div class="wrapperInput">
+            <input placeholder="entrer votre age" name="annee_naissance" type="number" class="form-control" id="input">
+            <span class="afterInput">ans</span>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+        integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
     <script>
-        jQuery(document).ready(function($) {
-
-            // $('#dSuggest').keypress(function() {
-            //     var dInput = this.value;
-            //     console.log(dInput);
-            //     $(".dDimension:contains('" + dInput + "')").css("display", "block");
-            // });
-
-            var input = document.getElementById('dSuggest');
-
-            input.onkeydown = function() {
-                var key = event.keyCode || event.charCode;
-
-                console.log(doGetCaretPosition(input));
-
-                if (key == 8 || key == 46)
-                    console.log('backspace !! HIT');
-            };
-
+        jQuery(document).ready(function ($) {
+            $('#input').keyup(function () {
+                var $text = "ans";
+                var $input = $(this);
+                createWrapper($input);
+                updateSpan($input, $text);
+            });
         });
 
-        function insertTextAfterInputValue($text) {
-            var $wrapper = $('.annee_naissance input').wrap("<div class='wrapperInput'></div>");
-            $wrapper.append("<span class='beforeInput'></span>");
+        function updateSpan($input, $text) {
+            var $currentInputValue = $input.val();
+            var $span = $('.afterInput');
+            $span.text($currentInputValue + " " + $text);
         }
 
-
-        function doGetCaretPosition(oField) {
-
-            // Initialize
-            var iCaretPos = 0;
-
-            // IE Support
-            if (document.selection) {
-
-                // Set focus on the element
-                oField.focus();
-
-                // To get cursor position, get empty selection range
-                var oSel = document.selection.createRange();
-
-                // Move selection start to 0 position
-                oSel.moveStart('character', -oField.value.length);
-
-                // The caret position is selection length
-                iCaretPos = oSel.text.length;
+        function createWrapper($input) {
+            if (!$input.parent().hasClass('wrapperInput')) {
+                var $wrapper = $(this).wrap("<div class='wrapperInput'></div>");
+                $wrapper.append("<span class='afterInput'>ans</span>");
             }
-
-            // Firefox support
-            else if (oField.selectionStart || oField.selectionStart == '0')
-                iCaretPos = oField.selectionDirection == 'backward' ? oField.selectionStart : oField.selectionEnd;
-
-            // Return results
-            return iCaretPos;
         }
+
     </script>
 
 </body>
